@@ -11,13 +11,13 @@ type
     FPeopleInCalifornia: Integer;
     procedure CalcCaliforniaPersons;
   protected
-    procedure AfterOpen(aDataSet: TDataSet); override;
-    procedure BeforeDelete(aDataSet: TDataSet); override;
-    procedure BeforePost(aDataSet: TDataSet); override;
-    procedure AfterDelete(aDataSet: TDataSet); override;
-    procedure AfterPost(aDataSet: TDataSet); override;
-    procedure AfterScroll(aDataSet: TDataSet); override;
-    procedure OnNewRecord(aDataSet: TDataSet); override;
+    procedure AfterOpen; override;
+    procedure BeforeDelete; override;
+    procedure BeforePost; override;
+    procedure AfterDelete; override;
+    procedure AfterPost; override;
+    procedure AfterScroll; override;
+    procedure OnNewRecord; override;
   public
     property PeopleInCalifornia: Integer read FPeopleInCalifornia;
     function IsItalianCustomer: Boolean;
@@ -30,41 +30,41 @@ uses
 
 { TCustomerTableModule }
 
-procedure TCustomerModule.AfterDelete(aDataSet: TDataSet);
+procedure TCustomerModule.AfterDelete;
 begin
   inherited;
   CalcCaliforniaPersons;
 end;
 
-procedure TCustomerModule.AfterOpen(aDataSet: TDataSet);
+procedure TCustomerModule.AfterOpen;
 begin
   inherited;
   CalcCaliforniaPersons;
 end;
 
-procedure TCustomerModule.AfterPost(aDataSet: TDataSet);
+procedure TCustomerModule.AfterPost;
 begin
   CalcCaliforniaPersons;
 end;
 
-procedure TCustomerModule.AfterScroll(aDataSet: TDataSet);
+procedure TCustomerModule.AfterScroll;
 begin
   inherited;
   NotifyObservers;
 end;
 
-procedure TCustomerModule.BeforeDelete(aDataSet: TDataSet);
+procedure TCustomerModule.BeforeDelete;
 begin
   inherited;
   if IsItalianCustomer then
     raise Exception.Create('You cannot delete italian customers!');
 end;
 
-procedure TCustomerModule.BeforePost(aDataSet: TDataSet);
+procedure TCustomerModule.BeforePost;
 begin
   inherited;
-  if aDataSet.FieldByName('CONTACT_FIRST').AsString.IsEmpty or
-    aDataSet.FieldByName('CONTACT_LAST').AsString.IsEmpty then
+  if DataSet.FieldByName('CONTACT_FIRST').AsString.IsEmpty or
+    DataSet.FieldByName('CONTACT_LAST').AsString.IsEmpty then
     raise Exception.Create('First name and last name are mandatory');
 end;
 
@@ -91,11 +91,11 @@ begin
   Result := SameText(DataSet.FieldByName('COUNTRY').AsString, 'ITALY');
 end;
 
-procedure TCustomerModule.OnNewRecord(aDataSet: TDataSet);
+procedure TCustomerModule.OnNewRecord;
 begin
   inherited;
-  aDataSet.FieldByName('COUNTRY').AsString := 'Italy';
-  aDataSet.FieldByName('STATE_PROVINCE').AsString := 'IT';
+  DataSet.FieldByName('COUNTRY').AsString := 'Italy';
+  DataSet.FieldByName('STATE_PROVINCE').AsString := 'IT';
 end;
 
 end.

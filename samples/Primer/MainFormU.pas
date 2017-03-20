@@ -17,7 +17,6 @@ type
   TMainForm = class(TForm, IColumbusObserver)
     FDConnection1: TFDConnection;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
-    FDPhysFBDriverLink1: TFDPhysFBDriverLink;
     FDQuery1: TFDQuery;
     DataSource1: TDataSource;
     DBGrid1: TDBGrid;
@@ -53,7 +52,8 @@ end;
 
 procedure TMainForm.UpdateObserver(const Sender: TObject; const ModuleName: String);
 begin
-  lblCaliforniaPeopleCount.Caption := Format('%d persons lives in California', [(Sender as TCustomerModule).PeopleInCalifornia]);
+  lblCaliforniaPeopleCount.Caption := Format('%d persons lives in California',
+    [(Sender as TCustomerModule).PeopleInCalifornia]);
   lblItalianCustomer.Visible := (Sender as TCustomerModule).IsItalianCustomer;
 end;
 

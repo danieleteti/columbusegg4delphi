@@ -11,10 +11,10 @@ type
     FTotalValue: Currency;
     procedure CalcTotalValue;
   protected
-    procedure AfterOpen(aDataSet: TDataSet); override;
-    procedure AfterDelete(aDataSet: TDataSet); override;
-    procedure AfterPost(aDataSet: TDataSet); override;
-    procedure AfterScroll(aDataSet: TDataSet); override;
+    procedure AfterOpen; override;
+    procedure AfterDelete; override;
+    procedure AfterPost; override;
+    procedure AfterScroll; override;
   public
     property TotalValue: Currency read FTotalValue;
   end;
@@ -23,25 +23,25 @@ implementation
 
 { TSalesModule }
 
-procedure TSalesModule.AfterDelete(aDataSet: TDataSet);
+procedure TSalesModule.AfterDelete;
 begin
   inherited;
   CalcTotalValue;
 end;
 
-procedure TSalesModule.AfterOpen(aDataSet: TDataSet);
+procedure TSalesModule.AfterOpen;
 begin
   inherited;
   CalcTotalValue;
 end;
 
-procedure TSalesModule.AfterPost(aDataSet: TDataSet);
+procedure TSalesModule.AfterPost;
 begin
   inherited;
   CalcTotalValue;
 end;
 
-procedure TSalesModule.AfterScroll(aDataSet: TDataSet);
+procedure TSalesModule.AfterScroll;
 begin
   inherited;
   CalcTotalValue;

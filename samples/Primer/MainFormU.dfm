@@ -81,7 +81,6 @@ object MainForm: TMainForm
     DataSource = DataSource1
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 1000
   end
   object Panel1: TPanel
     Left = 0
@@ -115,8 +114,8 @@ object MainForm: TMainForm
       ParentFont = False
       Transparent = False
       Layout = tlCenter
-      ExplicitTop = 29
-      ExplicitHeight = 28
+      ExplicitWidth = 217
+      ExplicitHeight = 19
     end
     object lblCaliforniaPeopleCount: TLabel
       AlignWithMargins = True
@@ -131,9 +130,7 @@ object MainForm: TMainForm
       Align = alTop
       Caption = 'Label1'
       Layout = tlCenter
-      ExplicitLeft = 4
-      ExplicitTop = 4
-      ExplicitWidth = 805
+      ExplicitWidth = 46
     end
   end
   object FDConnection1: TFDConnection
@@ -146,12 +143,8 @@ object MainForm: TMainForm
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 608
-    Top = 312
-  end
-  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
-    Left = 712
-    Top = 312
+    Left = 568
+    Top = 280
   end
   object FDQuery1: TFDQuery
     ActiveStoredUsage = [auDesignTime]

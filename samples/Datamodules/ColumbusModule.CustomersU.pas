@@ -22,12 +22,12 @@ type
     procedure SetCustomerLon(const Value: Extended);
     procedure SetCustomertLat(const Value: Extended);
   protected
-    procedure AfterOpen(aDataSet: TDataSet); override;
-    procedure BeforeDelete(aDataSet: TDataSet); override;
-    procedure BeforePost(aDataSet: TDataSet); override;
-    procedure AfterDelete(aDataSet: TDataSet); override;
-    procedure AfterPost(aDataSet: TDataSet); override;
-    procedure AfterScroll(aDataSet: TDataSet); override;
+    procedure AfterOpen; override;
+    procedure BeforeDelete; override;
+    procedure BeforePost; override;
+    procedure AfterDelete; override;
+    procedure AfterPost; override;
+    procedure AfterScroll; override;
   public
     constructor Create(aDataSet: TDataSet; aExportService: IExportService; aGeocodingService: IGeocodingService; aListener: IColumbusUIListener = nil);
     procedure ExportToFile(FileName: String);
@@ -46,36 +46,36 @@ uses
 
 { TCustomerTableModule }
 
-procedure TCustomerModule.AfterDelete(aDataSet: TDataSet);
+procedure TCustomerModule.AfterDelete;
 begin
   inherited;
   CalcCaliforniaPersons;
 end;
 
-procedure TCustomerModule.AfterOpen(aDataSet: TDataSet);
+procedure TCustomerModule.AfterOpen;
 begin
   inherited;
   CalcCaliforniaPersons;
 end;
 
-procedure TCustomerModule.AfterPost(aDataSet: TDataSet);
+procedure TCustomerModule.AfterPost;
 begin
   CalcCaliforniaPersons;
 end;
 
-procedure TCustomerModule.AfterScroll(aDataSet: TDataSet);
+procedure TCustomerModule.AfterScroll;
 begin
   inherited;
   FGeocodeIsValid := False;
   NotifyObservers;
 end;
 
-procedure TCustomerModule.BeforeDelete(aDataSet: TDataSet);
+procedure TCustomerModule.BeforeDelete;
 begin
   inherited;
-  if SameText(aDataSet.FieldByName('COUNTRY').AsString, 'ITALY') then
+  if SameText(DataSet.FieldByName('COUNTRY').AsString, 'ITALY') then
     raise Exception.Create('You cannot delete italian people!');
-  if SameText(aDataSet.FieldByName('STATE_PROVINCE').AsString, 'CA') then
+  if SameText(DataSet.FieldByName('STATE_PROVINCE').AsString, 'CA') then
   begin
     if UIListener.UIMessageDialog('Do you really want to delete this customer from California?', mtConfirmation,
       mbyesno) <> mrYes then
@@ -83,11 +83,11 @@ begin
   end;
 end;
 
-procedure TCustomerModule.BeforePost(aDataSet: TDataSet);
+procedure TCustomerModule.BeforePost;
 begin
   inherited;
-  if aDataSet.FieldByName('CONTACT_FIRST').AsString.IsEmpty or
-    aDataSet.FieldByName('CONTACT_LAST').AsString.IsEmpty then
+  if DataSet.FieldByName('CONTACT_FIRST').AsString.IsEmpty or
+    DataSet.FieldByName('CONTACT_LAST').AsString.IsEmpty then
     raise Exception.Create('First name and last name are mandatory');
 end;
 

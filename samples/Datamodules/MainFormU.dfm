@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 0
   Caption = 'MainForm'
   ClientHeight = 592
-  ClientWidth = 1115
+  ClientWidth = 1096
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,7 +17,7 @@ object MainForm: TMainForm
   object DBGrid1: TDBGrid
     Left = 0
     Top = 66
-    Width = 1115
+    Width = 1096
     Height = 205
     Align = alClient
     DataSource = DataSource1
@@ -82,16 +82,17 @@ object MainForm: TMainForm
   object DBNavigator1: TDBNavigator
     Left = 0
     Top = 41
-    Width = 1115
+    Width = 1096
     Height = 25
     DataSource = DataSource1
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 1115
   end
   object Panel1: TPanel
     Left = 0
     Top = 271
-    Width = 1115
+    Width = 1096
     Height = 65
     Align = alBottom
     Font.Charset = DEFAULT_CHARSET
@@ -101,21 +102,21 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    ExplicitTop = 192
+    ExplicitWidth = 1115
     object Label1: TLabel
       AlignWithMargins = True
       Left = 4
       Top = 4
-      Width = 1055
+      Width = 1036
       Height = 57
       Align = alClient
       Caption = 'Label1'
-      ExplicitWidth = 805
-      ExplicitHeight = 40
+      ExplicitWidth = 60
+      ExplicitHeight = 25
     end
     object Label3: TLabel
       AlignWithMargins = True
-      Left = 1065
+      Left = 1046
       Top = 4
       Width = 46
       Height = 57
@@ -128,18 +129,18 @@ object MainForm: TMainForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      ExplicitLeft = 808
+      ExplicitLeft = 1065
       ExplicitHeight = 19
     end
   end
   object DBGrid2: TDBGrid
     Left = 0
     Top = 336
-    Width = 1115
+    Width = 1096
     Height = 188
     Align = alBottom
     DataSource = DataSource2
-    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -177,6 +178,7 @@ object MainForm: TMainForm
       item
         Expanded = False
         FieldName = 'DATE_NEEDED'
+        Width = 143
         Visible = True
       end
       item
@@ -198,7 +200,7 @@ object MainForm: TMainForm
   object Panel2: TPanel
     Left = 0
     Top = 524
-    Width = 1115
+    Width = 1096
     Height = 68
     Align = alBottom
     Font.Charset = DEFAULT_CHARSET
@@ -208,28 +210,36 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     TabOrder = 4
+    ExplicitWidth = 1115
     object Label2: TLabel
       AlignWithMargins = True
       Left = 4
       Top = 4
-      Width = 1107
-      Height = 25
+      Width = 1088
+      Height = 23
       Align = alTop
       Caption = 'Label1'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+      ParentFont = False
       Layout = tlCenter
-      ExplicitWidth = 60
+      ExplicitWidth = 78
     end
   end
   object Panel3: TPanel
     Left = 0
     Top = 0
-    Width = 1115
+    Width = 1096
     Height = 41
     Align = alTop
     TabOrder = 5
+    ExplicitWidth = 1115
     object btnExport: TSpeedButton
       AlignWithMargins = True
-      Left = 940
+      Left = 921
       Top = 4
       Width = 171
       Height = 33
@@ -239,7 +249,7 @@ object MainForm: TMainForm
     end
     object Button1: TSpeedButton
       AlignWithMargins = True
-      Left = 763
+      Left = 744
       Top = 4
       Width = 171
       Height = 33

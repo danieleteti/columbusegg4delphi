@@ -61,21 +61,34 @@ type
     procedure UnHookScrollEvents(aDataSet: TDataSet);
     procedure HookScrollEvents(aDataSet: TDataSet);
     function GetModuleByName(const aModuleName: String): TCustomColumbusModule;
+
+    procedure OnNewRecord(aDataSet: TDataSet); overload;
+    procedure BeforePost(aDataSet: TDataSet); overload;
+    procedure BeforeDelete(aDataSet: TDataSet); overload;
+    procedure BeforeEdit(aDataSet: TDataSet); overload;
+    procedure BeforeInsert(aDataSet: TDataSet); overload;
+    procedure AfterOpen(aDataSet: TDataSet); overload;
+    procedure AfterPost(aDataSet: TDataSet); overload;
+    procedure AfterDelete(aDataSet: TDataSet); overload;
+    procedure AfterScroll(aDataSet: TDataSet); overload;
+    procedure AfterRefresh(aDataSet: TDataSet); overload;
+    procedure OnCalcFields(aDataSet: TDataSet); overload;
+    procedure OnEditError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction); overload;
   protected
     procedure FreezeDataset(aDisableScrollEvents: Boolean = False);
     procedure UnFreezeDataset;
-    procedure OnNewRecord(aDataSet: TDataSet); virtual;
-    procedure BeforePost(aDataSet: TDataSet); virtual;
-    procedure BeforeDelete(aDataSet: TDataSet); virtual;
-    procedure BeforeEdit(aDataSet: TDataSet); virtual;
-    procedure BeforeInsert(aDataSet: TDataSet); virtual;
-    procedure AfterOpen(aDataSet: TDataSet); virtual;
-    procedure AfterPost(aDataSet: TDataSet); virtual;
-    procedure AfterDelete(aDataSet: TDataSet); virtual;
-    procedure AfterScroll(aDataSet: TDataSet); virtual;
-    procedure AfterRefresh(aDataSet: TDataSet); virtual;
-    procedure OnCalcFields(aDataSet: TDataSet); virtual;
-    procedure OnEditError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction); virtual;
+    procedure OnNewRecord; overload; virtual;
+    procedure BeforePost; overload; virtual;
+    procedure BeforeDelete; overload; virtual;
+    procedure BeforeEdit; overload; virtual;
+    procedure BeforeInsert; overload; virtual;
+    procedure AfterOpen; overload; virtual;
+    procedure AfterPost; overload; virtual;
+    procedure AfterDelete; overload; virtual;
+    procedure AfterScroll; overload; virtual;
+    procedure AfterRefresh; overload; virtual;
+    procedure OnCalcFields; overload; virtual;
+    procedure OnEditError(E: EDatabaseError; var Action: TDataAction); overload; virtual;
     property DataSetOwner: TComponent read FDataSetOwner;
     property Modules[const Index: String]: TCustomColumbusModule read GetModuleByName;
   public
@@ -84,6 +97,14 @@ type
     procedure SafePost; virtual;
     procedure SafeEdit; virtual;
     property DataSet: TDataSet read FDataSet;
+  end;
+
+  TColumbusMockObserver = class(TInterfacedObject, IColumbusObserver)
+  protected
+    FProc: TProc<TObject,String>;
+  public
+    constructor Create(Proc: TProc<TObject,String>);
+    procedure UpdateObserver(const Sender: TObject; const ModuleName: string);
   end;
 
 var
@@ -96,50 +117,70 @@ uses
 
 { TCustomColumbusModule }
 
+{$REGION 'Events to methods'}
+
 procedure TCustomColumbusModule.AfterDelete(aDataSet: TDataSet);
 begin
-  // do nothing
+  AfterDelete;
 end;
 
 procedure TCustomColumbusModule.AfterOpen(aDataSet: TDataSet);
 begin
-  // do nothing
+  AfterOpen;
 end;
 
 procedure TCustomColumbusModule.AfterPost(aDataSet: TDataSet);
 begin
-  // do nothing
+  AfterPost;
 end;
 
 procedure TCustomColumbusModule.AfterScroll(aDataSet: TDataSet);
 begin
-  // do nothing
+  AfterScroll;
 end;
 
 procedure TCustomColumbusModule.AfterRefresh(aDataSet: TDataSet);
 begin
-  // do nothing
+  AfterRefresh;
 end;
 
 procedure TCustomColumbusModule.BeforeDelete(aDataSet: TDataSet);
 begin
-  // do nothing
+  BeforeDelete;
 end;
 
 procedure TCustomColumbusModule.BeforeEdit(aDataSet: TDataSet);
 begin
-  // do nothing
+  BeforeEdit;
 end;
 
 procedure TCustomColumbusModule.BeforeInsert(aDataSet: TDataSet);
 begin
-  // do nothing
+  BeforeInsert;
 end;
 
 procedure TCustomColumbusModule.BeforePost(aDataSet: TDataSet);
 begin
-  // do nothing
+  BeforePost;
 end;
+
+procedure TCustomColumbusModule.OnCalcFields(aDataSet: TDataSet);
+begin
+  OnCalcFields;
+end;
+
+procedure TCustomColumbusModule.OnNewRecord(aDataSet: TDataSet);
+begin
+  OnNewRecord;
+end;
+
+procedure TCustomColumbusModule.OnEditError(DataSet: TDataSet;
+  E: EDatabaseError; var Action: TDataAction);
+begin
+  OnEditError(E, Action);
+end;
+
+{$ENDREGION}
 
 constructor TCustomColumbusModule.Create(aDataSet: TDataSet; aListener: IColumbusUIListener);
 begin
@@ -220,22 +261,6 @@ begin
   aDataSet.AfterRefresh := AfterRefresh;
 end;
 
-procedure TCustomColumbusModule.OnCalcFields(aDataSet: TDataSet);
-begin
-  // do nothing
-end;
-
-procedure TCustomColumbusModule.OnEditError(DataSet: TDataSet;
-  E: EDatabaseError; var Action: TDataAction);
-begin
-  // do nothing
-end;
-
-procedure TCustomColumbusModule.OnNewRecord(aDataSet: TDataSet);
-begin
-  // do nothing
-end;
-
 procedure TCustomColumbusModule.SafeEdit;
 begin
   if DataSet.State in [dsBrowse] then
@@ -261,7 +286,7 @@ begin
   aDataSet.AfterRefresh := nil;
 end;
 
-{ TSubject }
+{ TColumbusSubject }
 
 constructor TColumbusSubject.Create(AOwner: TComponent);
 begin
@@ -303,8 +328,11 @@ function TColumbusSubject.GetUIListener: IColumbusUIListener;
 begin
   if FUIListener = nil then
   begin
-    FUIListener := ColumbusDefaultUIListener.Create as IColumbusUIListener; // col TColumbusUIListener.Create;
-    // raise EColumbusException.Create('UIListener not set');
+    if ColumbusDefaultUIListener = nil then
+    begin
+      raise EColumbusException.Create('No UIListener nor ColumbusDefaultUIListener is set');
+    end;
+    FUIListener := ColumbusDefaultUIListener.Create as IColumbusUIListener;
   end;
   Result := FUIListener;
 end;
@@ -350,6 +378,83 @@ begin
   FServices.Remove(aService);
 end;
 
-{ TColumbusUIListener }
+{$REGION 'Virtual Methods'}
+
+procedure TCustomColumbusModule.AfterDelete;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.AfterOpen;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.AfterPost;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.AfterRefresh;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.AfterScroll;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.BeforeDelete;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.BeforeEdit;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.BeforeInsert;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.OnNewRecord;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.OnCalcFields;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.BeforePost;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.OnEditError(E: EDatabaseError; var Action: TDataAction);
+begin
+  // do nothing
+end;
+
+{$ENDREGION}
+
+
+{ TColumbusMockObserver }
+
+constructor TColumbusMockObserver.Create(Proc: TProc<TObject,String>);
+begin
+  inherited Create;
+  FProc := Proc;
+end;
+
+procedure TColumbusMockObserver.UpdateObserver(const Sender: TObject;
+  const ModuleName: string);
+begin
+  FProc(Sender, ModuleName);
+end;
 
 end.

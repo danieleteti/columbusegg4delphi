@@ -76,8 +76,8 @@ begin
   if SameText(ModuleName, 'TCustomerModule') then
   begin
     lCustomerModule := Sender as TCustomerModule;
-    Label1.Caption := Format('%d persons lives in California', [lCustomerModule.PeopleInCalifornia]) +
-      sLineBreak +
+    Label1.Caption := Format('%d persons lives in California',
+      [lCustomerModule.PeopleInCalifornia]) + sLineBreak +
       'Sales count: ' + lCustomerModule.SalesCount.ToString;
     Label3.Visible := lCustomerModule.GeocodeIsValid;
     if Label3.Visible then
@@ -88,7 +88,8 @@ begin
   end;
   if SameText(ModuleName, 'TSalesModule') then
   begin
-    Label2.Caption := 'TOTAL SALES VALUE: € ' + CurrToStr((Sender as TSalesModule).TotalValue);
+    Label2.Caption := 'TOTAL SALES VALUE: € ' +
+      FormatCurr('0.00', (Sender as TSalesModule).TotalValue).PadLeft(8);
   end;
 end;
 
