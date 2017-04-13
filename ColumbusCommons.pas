@@ -82,6 +82,7 @@ type
     procedure AfterDelete; overload; virtual;
     procedure AfterScroll; overload; virtual;
     procedure AfterRefresh; overload; virtual;
+    procedure AfterDataChanged; virtual;
     procedure OnCalcFields; overload; virtual;
     procedure OnEditError(E: EDatabaseError; var Action: TDataAction); overload; virtual;
     property DataSetOwner: TComponent read FDataSetOwner;
@@ -122,16 +123,19 @@ uses
 procedure TCustomColumbusModule.AfterDelete(aDataSet: TDataSet);
 begin
   AfterDelete;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.AfterOpen(aDataSet: TDataSet);
 begin
   AfterOpen;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.AfterPost(aDataSet: TDataSet);
 begin
   AfterPost;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.AfterScroll(aDataSet: TDataSet);
@@ -142,6 +146,7 @@ end;
 procedure TCustomColumbusModule.AfterRefresh(aDataSet: TDataSet);
 begin
   AfterRefresh;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.BeforeDelete(aDataSet: TDataSet);
@@ -379,6 +384,11 @@ begin
 end;
 
 {$REGION 'Virtual Methods'}
+
+procedure TCustomColumbusModule.AfterDataChanged;
+begin
+  // do nothing
+end;
 
 procedure TCustomColumbusModule.AfterDelete;
 begin
