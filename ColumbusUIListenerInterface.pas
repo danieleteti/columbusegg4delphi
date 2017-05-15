@@ -3,7 +3,10 @@ unit ColumbusUIListenerInterface;
 interface
 
 uses
-  System.UITypes;
+  {$IF CompilerVersion >= 20}
+  System.UITypes,
+  {$IFEND}
+  Dialogs;
 
 type
   IColumbusUIListener = interface

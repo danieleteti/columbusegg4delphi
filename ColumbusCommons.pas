@@ -46,16 +46,11 @@ type
     FDataSet: TDataSet;
     FDataSetOwner: TComponent;
     FListener: IColumbusUIListener;
-
-    {$IF CompilerVersion >= 20}
-
+{$IF CompilerVersion >= 20}
     FBookmark: TArray<Byte>;
-
-    {$ELSE}
-
+{$ELSE}
     FBookmark: String;
-
-    {$IFEND}
+{$IFEND}
 
     procedure HookEvents(aDataSet: TDataSet);
     procedure UnHookScrollEvents(aDataSet: TDataSet);
@@ -99,6 +94,7 @@ type
     property DataSet: TDataSet read FDataSet;
   end;
 
+  {$IF CompilerVersion >= 20}
   TColumbusMockObserver = class(TInterfacedObject, IColumbusObserver)
   protected
     FProc: TProc<TObject,String>;
@@ -106,6 +102,7 @@ type
     constructor Create(Proc: TProc<TObject,String>);
     procedure UpdateObserver(const Sender: TObject; const ModuleName: string);
   end;
+  {$IFEND}
 
 var
   ColumbusDefaultUIListener: TInterfacedClass = nil;
@@ -113,7 +110,10 @@ var
 implementation
 
 uses
-  ColumbusModulesLocator, System.UITypes;
+  {$IF CompilerVersion >= 20}
+  System.UITypes,
+  {$IFEND}
+  ColumbusModulesLocator;
 
 { TCustomColumbusModule }
 
@@ -442,7 +442,7 @@ end;
 
 {$ENDREGION}
 
-
+{$IF CompilerVersion >= 20}
 { TColumbusMockObserver }
 
 constructor TColumbusMockObserver.Create(Proc: TProc<TObject,String>);
@@ -456,5 +456,6 @@ procedure TColumbusMockObserver.UpdateObserver(const Sender: TObject;
 begin
   FProc(Sender, ModuleName);
 end;
+{$IFEND}
 
 end.
