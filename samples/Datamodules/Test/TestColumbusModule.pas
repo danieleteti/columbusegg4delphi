@@ -12,8 +12,9 @@ unit TestColumbusModule;
 interface
 
 uses
-  TestFramework, DB, Columbus.Commons, ColumbusModule.CustomersU,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Stan.StorageXML;
+  TestFramework, DB, ColumbusModule.CustomersU,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Stan.StorageXML,
+  ColumbusCommons;
 
 type
   // Test methods for class TCustomerModule
@@ -40,13 +41,14 @@ type
 implementation
 
 uses
-  ExportServiceU, FireDAC.Stan.Intf;
+  ExportServiceU, FireDAC.Stan.Intf,
+  GeocodingServiceU;
 
 procedure TestTCustomerModule.SetUp;
 begin
   FListener := TColumbusObserver.Create;
   FDataSet := TFDMemTable.Create(nil);
-  FCustomerModule := TCustomerModule.Create(FDataSet);
+  FCustomerModule := TCustomerModule.Create(FDataSet, TExportService.Create, TGeocodingService.Create);
   FCustomerModule.RegisterObserver(FListener);
   FDataSet.LoadFromFile('customers.xml', sfXML);
 end;

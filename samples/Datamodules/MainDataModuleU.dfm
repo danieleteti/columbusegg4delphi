@@ -6,7 +6,7 @@ object DataModuleMain: TDataModuleMain
   object FDConnection1: TFDConnection
     Params.Strings = (
       'ConnectionDef=employee_fb')
-    Connected = True
+    ConnectedStoredUsage = []
     LoginPrompt = False
     Left = 128
     Top = 48
@@ -22,7 +22,6 @@ object DataModuleMain: TDataModuleMain
   end
   object dsCustomers: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = FDConnection1
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
@@ -46,7 +45,6 @@ object DataModuleMain: TDataModuleMain
   end
   object dsSales: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     MasterSource = dsrcCustomers
     MasterFields = 'CUST_NO'
     DetailFields = 'CUST_NO'

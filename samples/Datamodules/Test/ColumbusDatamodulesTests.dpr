@@ -18,8 +18,10 @@ uses
   DUnitTestRunner,
   TestColumbusModule in 'TestColumbusModule.pas',
   ColumbusModule.CustomersU in '..\ColumbusModule.CustomersU.pas',
-  Columbus.Commons in '..\..\..\Columbus.Commons.pas',
-  Columbus.ModulesLocator in '..\..\..\Columbus.ModulesLocator.pas',
+  ColumbusCommons in '..\..\..\ColumbusCommons.pas',
+  ColumbusUIListenerInterface in '..\..\..\ColumbusUIListenerInterface.pas',
+  ColumbusModulesLocator in '..\..\..\ColumbusModulesLocator.pas',
+  GeocodingServiceU in '..\GeocodingServiceU.pas',
   ExportServiceU in '..\ExportServiceU.pas';
 
 {$R *.RES}

@@ -87,7 +87,6 @@ object MainForm: TMainForm
     DataSource = DataSource1
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 1115
   end
   object Panel1: TPanel
     Left = 0
@@ -102,7 +101,6 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    ExplicitWidth = 1115
     object Label1: TLabel
       AlignWithMargins = True
       Left = 4
@@ -129,7 +127,6 @@ object MainForm: TMainForm
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      ExplicitLeft = 1065
       ExplicitHeight = 19
     end
   end
@@ -210,7 +207,6 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    ExplicitWidth = 1115
     object Label2: TLabel
       AlignWithMargins = True
       Left = 4
@@ -236,7 +232,6 @@ object MainForm: TMainForm
     Height = 41
     Align = alTop
     TabOrder = 5
-    ExplicitWidth = 1115
     object btnExport: TSpeedButton
       AlignWithMargins = True
       Left = 921

@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{DCAA681C-233D-4A85-817E-F74EF8780E90}</ProjectGuid>
+        <ProjectGuid>{A92EA368-0A9B-42B3-B8BD-0E03015ACCBA}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="ColumbusDatamodules.dproj">
