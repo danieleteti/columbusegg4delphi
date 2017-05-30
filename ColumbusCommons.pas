@@ -62,6 +62,7 @@ type
     procedure BeforeDelete(aDataSet: TDataSet); overload;
     procedure BeforeEdit(aDataSet: TDataSet); overload;
     procedure BeforeInsert(aDataSet: TDataSet); overload;
+    procedure AfterInsert(aDataSet: TDataSet); overload;
     procedure AfterOpen(aDataSet: TDataSet); overload;
     procedure AfterPost(aDataSet: TDataSet); overload;
     procedure AfterDelete(aDataSet: TDataSet); overload;
@@ -77,6 +78,7 @@ type
     procedure BeforeDelete; overload; virtual;
     procedure BeforeEdit; overload; virtual;
     procedure BeforeInsert; overload; virtual;
+    procedure AfterInsert; overload; virtual;
     procedure AfterOpen; overload; virtual;
     procedure AfterPost; overload; virtual;
     procedure AfterDelete; overload; virtual;
@@ -236,6 +238,9 @@ begin
   Assert(not Assigned(aDataSet.BeforeInsert), 'BeforeInsert is set on ' + aDataSet.name);
   aDataSet.BeforeInsert := BeforeInsert;
 
+  Assert(not Assigned(aDataSet.AfterInsert), 'AfterInsert is set on ' + aDataSet.name);
+  aDataSet.AfterInsert := AfterInsert;
+
   Assert(not Assigned(aDataSet.AfterOpen), 'AfterOpen is set on ' + aDataSet.name);
   aDataSet.AfterOpen := AfterOpen;
 
@@ -391,6 +396,16 @@ begin
 end;
 
 procedure TCustomColumbusModule.AfterDelete;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.AfterInsert(aDataSet: TDataSet);
+begin
+  AfterInsert;
+end;
+
+procedure TCustomColumbusModule.AfterInsert;
 begin
   // do nothing
 end;
