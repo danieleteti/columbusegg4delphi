@@ -1,5 +1,8 @@
 ![columbusegg4delphi logo](https://github.com/danieleteti/columbusegg4delphi/blob/master/resources/ColumbusEgg4DelphiLogo.png)
 
+
+# WARNING! The Official Repository of columbusegg4delphi is [here](https://bitbucket.org/bittimepro/columbusegg4delphi).
+
 ColumbusEgg4Delphi is...
 
 - A simple to use Delphi framework to correctly write business logic in Delphi "RAD style" applications. 
