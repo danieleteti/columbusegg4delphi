@@ -62,6 +62,7 @@ type
     procedure BeforeDelete(aDataSet: TDataSet); overload;
     procedure BeforeEdit(aDataSet: TDataSet); overload;
     procedure BeforeInsert(aDataSet: TDataSet); overload;
+    procedure AfterInsert(aDataSet: TDataSet); overload;
     procedure AfterOpen(aDataSet: TDataSet); overload;
     procedure AfterPost(aDataSet: TDataSet); overload;
     procedure AfterDelete(aDataSet: TDataSet); overload;
@@ -77,11 +78,13 @@ type
     procedure BeforeDelete; overload; virtual;
     procedure BeforeEdit; overload; virtual;
     procedure BeforeInsert; overload; virtual;
+    procedure AfterInsert; overload; virtual;
     procedure AfterOpen; overload; virtual;
     procedure AfterPost; overload; virtual;
     procedure AfterDelete; overload; virtual;
     procedure AfterScroll; overload; virtual;
     procedure AfterRefresh; overload; virtual;
+    procedure AfterDataChanged; virtual;
     procedure OnCalcFields; overload; virtual;
     procedure OnEditError(E: EDatabaseError; var Action: TDataAction); overload; virtual;
     property DataSetOwner: TComponent read FDataSetOwner;
@@ -122,16 +125,19 @@ uses
 procedure TCustomColumbusModule.AfterDelete(aDataSet: TDataSet);
 begin
   AfterDelete;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.AfterOpen(aDataSet: TDataSet);
 begin
   AfterOpen;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.AfterPost(aDataSet: TDataSet);
 begin
   AfterPost;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.AfterScroll(aDataSet: TDataSet);
@@ -142,6 +148,7 @@ end;
 procedure TCustomColumbusModule.AfterRefresh(aDataSet: TDataSet);
 begin
   AfterRefresh;
+  AfterDataChanged;
 end;
 
 procedure TCustomColumbusModule.BeforeDelete(aDataSet: TDataSet);
@@ -230,6 +237,9 @@ begin
 
   Assert(not Assigned(aDataSet.BeforeInsert), 'BeforeInsert is set on ' + aDataSet.name);
   aDataSet.BeforeInsert := BeforeInsert;
+
+  Assert(not Assigned(aDataSet.AfterInsert), 'AfterInsert is set on ' + aDataSet.name);
+  aDataSet.AfterInsert := AfterInsert;
 
   Assert(not Assigned(aDataSet.AfterOpen), 'AfterOpen is set on ' + aDataSet.name);
   aDataSet.AfterOpen := AfterOpen;
@@ -380,7 +390,22 @@ end;
 
 {$REGION 'Virtual Methods'}
 
+procedure TCustomColumbusModule.AfterDataChanged;
+begin
+  // do nothing
+end;
+
 procedure TCustomColumbusModule.AfterDelete;
+begin
+  // do nothing
+end;
+
+procedure TCustomColumbusModule.AfterInsert(aDataSet: TDataSet);
+begin
+  AfterInsert;
+end;
+
+procedure TCustomColumbusModule.AfterInsert;
 begin
   // do nothing
 end;
