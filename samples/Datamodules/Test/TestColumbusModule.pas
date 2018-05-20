@@ -25,6 +25,7 @@ type
   private
     FDataSet: TFDMemTable;
     FListener: IColumbusObserver;
+    procedure LoadCustomersXML;
   public
     procedure SetUp; override;
     procedure TearDown; override;
@@ -42,7 +43,18 @@ implementation
 
 uses
   ExportServiceU, FireDAC.Stan.Intf,
-  GeocodingServiceU;
+  GeocodingServiceU, System.SysUtils;
+
+
+procedure TestTCustomerModule.LoadCustomersXML;
+begin
+  if FileExists('customers.xml') then
+    FDataSet.LoadFromFile('customers.xml', sfXML)
+  else if FileExists('../../customers.xml') then
+    FDataSet.LoadFromFile('../../customers.xml', sfXML)
+  else
+    raise EInOutError.Create('File with XML Dataset not found!');
+end;
 
 procedure TestTCustomerModule.SetUp;
 begin
@@ -50,7 +62,7 @@ begin
   FDataSet := TFDMemTable.Create(nil);
   FCustomerModule := TCustomerModule.Create(FDataSet, TExportService.Create, TGeocodingService.Create);
   FCustomerModule.RegisterObserver(FListener);
-  FDataSet.LoadFromFile('customers.xml', sfXML);
+  LoadCustomersXML;
 end;
 
 procedure TestTCustomerModule.TearDown;
