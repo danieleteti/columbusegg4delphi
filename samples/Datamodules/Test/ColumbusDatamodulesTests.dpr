@@ -22,7 +22,8 @@ uses
   ColumbusUIListenerInterface in '..\..\..\ColumbusUIListenerInterface.pas',
   ColumbusModulesLocator in '..\..\..\ColumbusModulesLocator.pas',
   GeocodingServiceU in '..\GeocodingServiceU.pas',
-  ExportServiceU in '..\ExportServiceU.pas';
+  ExportServiceU in '..\ExportServiceU.pas',
+  GlobalConsts in 'GlobalConsts.pas';
 
 {$R *.RES}
 
