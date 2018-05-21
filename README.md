@@ -1,8 +1,5 @@
 ![columbusegg4delphi logo](https://github.com/danieleteti/columbusegg4delphi/blob/master/resources/ColumbusEgg4DelphiLogo.png)
 
-
-# WARNING! The Official Repository of columbusegg4delphi is [here](https://bitbucket.org/bittimepro/columbusegg4delphi).
-
 ColumbusEgg4Delphi is...
 
 - A simple to use Delphi framework to correctly write business logic in Delphi "RAD style" applications. 
@@ -25,3 +22,6 @@ ColumbusEgg4Delphi is...
   - Just create a columbus module for each dataset and move there all the events related code. It is an incremental approach; you can change it one dataset at time.
 
 
+# Contributions
+
+I'll gladly accept any pull request that makes this project better and more versatile. If you would like to contribute but don't know where to start, check the [Issues](https://github.com/danieleteti/columbusegg4delphi/issues).
