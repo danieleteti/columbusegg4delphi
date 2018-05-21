@@ -3,7 +3,7 @@ unit ColumbusModule.CustomersU;
 interface
 
 uses
-  DB, ColumbusCommons, ExportServiceU, GeocodingServiceU,
+  System.Classes, DB, ColumbusCommons, ExportServiceU, GeocodingServiceU,
   ColumbusUIListenerInterface;
 
 type
@@ -31,6 +31,7 @@ type
   public
     constructor Create(aDataSet: TDataSet; aExportService: IExportService; aGeocodingService: IGeocodingService; aListener: IColumbusUIListener = nil);
     procedure ExportToFile(FileName: String);
+    procedure ExportToStream(Stream: TStream);
     procedure CustomerGeocode;
     property PeopleInCalifornia: Integer read FPeopleInCalifornia;
     property SalesCount: Integer read GetSalesCount;
@@ -122,6 +123,11 @@ procedure TCustomerModule.ExportToFile(FileName: String);
 begin
   FExportService.SaveToCSV(DataSet, FileName);
   UIListener.UIMessageDialog('Customers exported in ' + FileName, mtInformation, [mbOK]);
+end;
+
+procedure TCustomerModule.ExportToStream(Stream: TStream);
+begin
+  FExportService.SaveToCSV(DataSet, Stream);
 end;
 
 procedure TCustomerModule.CustomerGeocode;

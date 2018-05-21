@@ -9,7 +9,10 @@ type
   end;
 
   TGeocodingService = class(TInterfacedObject, IGeocodingService)
+  private
+    FGoogleApiKey: String;
   public
+    constructor Create(GoogleAPIKey: string = '');
     procedure GetCoords(const City, State: String; out Lat, Lon: Extended);
   end;
 
@@ -18,10 +21,18 @@ implementation
 uses
   System.Net.HTTPClient, System.NetEncoding, System.JSON, System.SysUtils;
 
-const
-  GEOCODEURL = 'http://maps.google.com/maps/api/geocode/json?address=';
-
   { TGeocodingService }
+
+const
+  GEOCODE_URL_WITH_KEY = 'https://maps.google.com/maps/api/geocode/json?' +
+    '&address=%s&key=%s';
+  GEOCODE_URL_NO_KEY = 'https://maps.google.com/maps/api/geocode/json?' +
+    '&address=%s';
+
+constructor TGeocodingService.Create(GoogleAPIKey: string);
+begin
+  FGoogleApiKey := GoogleAPIKey;
+end;
 
 procedure TGeocodingService.GetCoords(const City, State: String; out Lat,
   Lon: Extended);
@@ -33,14 +44,23 @@ var
   lJGeometry: TJSONObject;
   lJLocation: TJSONObject;
   lJNumber: TJSONNumber;
+  sAddress: String;
+  sStatus: string;
+  sErrorMessage: string;
 begin
   lHTTP := THttpClient.Create;
   try
-    lURL := GEOCODEURL + ',' + TNetEncoding.URL.Encode(City) + ',' + TNetEncoding.URL.Encode(State);
+    sAddress := ',' + TNetEncoding.URL.Encode(City) + ',' +
+      TNetEncoding.URL.Encode(State);
+    if FGoogleApiKey<>'' then
+      lURL := Format(GEOCODE_URL_WITH_KEY, [sAddress, FGoogleApiKey])
+    else
+      lURL := Format(GEOCODE_URL_NO_KEY, [sAddress]);
     lResp := lHTTP.Get(lURL);
     lJObj := TJSONObject.ParseJSONValue(lResp.ContentAsString) as TJSONObject;
     try
-      if lJObj.GetValue('status').Value = 'OK' then
+      sStatus := lJObj.GetValue('status').Value;
+      if sStatus = 'OK' then
       begin
         lJGeometry := (lJObj.GetValue('results') as TJSONArray).Items[0].GetValue<TJSONObject>('geometry');
         lJLocation := lJGeometry.GetValue('location') as TJSONObject;
@@ -51,7 +71,9 @@ begin
       end
       else
       begin
-        raise Exception.Create('Impossibile geocoding: ' + lJObj.GetValue('status').Value);
+        sErrorMessage := lJObj.GetValue('error_message').Value;
+        raise Exception.Create('Impossibile geocoding: ' + sStatus + sLineBreak
+          + 'message:' + sErrorMessage);
       end;
     finally
       lJObj.Free;
