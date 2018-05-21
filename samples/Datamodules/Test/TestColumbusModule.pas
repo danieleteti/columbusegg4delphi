@@ -43,7 +43,7 @@ implementation
 
 uses
   ExportServiceU, FireDAC.Stan.Intf,
-  GeocodingServiceU, System.SysUtils;
+  GeocodingServiceU, System.SysUtils, System.Classes, System.Hash;
 
 
 procedure TestTCustomerModule.LoadCustomersXML;
@@ -77,11 +77,26 @@ begin
   CheckEquals(3, FCustomerModule.PeopleInCalifornia);
 end;
 
+function GetStrHashSHA1(Str: String): String;
+var
+  HashSHA: System.Hash.THashSHA1;
+begin
+  HashSHA := THashSHA1.Create;
+  HashSHA.GetHashString(Str);
+  result := HashSHA.GetHashString(Str);
+end;
+
 procedure TestTCustomerModule.TestExportToFile;
 var
-  FileName: string;
+  Data: string;
+  Stream: TStringStream;
+  Hash: string;
 begin
-  // FCustomerModule.ExportToFile(FileName);
+  Stream := TStringStream.Create;
+  FCustomerModule.ExportToStream(Stream);
+  Hash := GetStrHashSHA1(Stream.DataString);
+  CheckEquals('df8199e4b6b9009b8e8070c0acccb6c1b1c290b4', Hash);
+  Stream.Free;
 end;
 
 { TColumbusObserver }
