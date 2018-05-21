@@ -98,6 +98,7 @@
         <DCCReference Include="..\..\..\ColumbusModulesLocator.pas"/>
         <DCCReference Include="..\GeocodingServiceU.pas"/>
         <DCCReference Include="..\ExportServiceU.pas"/>
+        <None Include="customers.xml"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -143,6 +144,12 @@
                 <DeployFile LocalName="Win32\Debug\ColumbusDatamodulesTests.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>ColumbusDatamodulesTests.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="customers.xml" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
