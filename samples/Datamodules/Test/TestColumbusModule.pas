@@ -32,6 +32,7 @@ type
   published
     procedure TestCalcCaliforniaPersons;
     procedure TestExportToCSV;
+    procedure TestGeocodeOfCustomer1003;
   end;
 
   TColumbusObserver = class(TInterfacedObject, IColumbusObserver)
@@ -97,6 +98,20 @@ begin
   Hash := GetStrHashSHA1(Stream.DataString);
   CheckEquals('df8199e4b6b9009b8e8070c0acccb6c1b1c290b4', Hash);
   Stream.Free;
+end;
+
+procedure TestTCustomerModule.TestGeocodeOfCustomer1003;
+var
+  CustomerID: Integer;
+begin
+  CustomerID := 1003;
+  if not FCustomerModule.DataSet.Locate('CUST_NO', CustomerID, []) then
+    Fail(Format('Cant locate CUST_NO=%d in the database', [CustomerID]));
+  FCustomerModule.CustomerGeocode;
+  CheckEquals(42.3600825, FCustomerModule.CustomertLat, 0.00000001,
+    'Incorect Latitude');
+  CheckEquals(-71.0588801, FCustomerModule.CustomerLon, 0.00000001,
+    'Incorect Longitude');
 end;
 
 { TColumbusObserver }
