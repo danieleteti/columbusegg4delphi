@@ -31,7 +31,7 @@ type
     procedure TearDown; override;
   published
     procedure TestCalcCaliforniaPersons;
-    procedure TestExportToFile;
+    procedure TestExportToCSV;
   end;
 
   TColumbusObserver = class(TInterfacedObject, IColumbusObserver)
@@ -86,7 +86,7 @@ begin
   result := HashSHA.GetHashString(Str);
 end;
 
-procedure TestTCustomerModule.TestExportToFile;
+procedure TestTCustomerModule.TestExportToCSV;
 var
   Data: string;
   Stream: TStringStream;
